@@ -11,24 +11,26 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var trayView: UIView!
+    @IBOutlet weak var deadImageView: UIImageView!
+    @IBOutlet weak var excitedImageView: UIImageView!
+    @IBOutlet weak var happyImageView: UIImageView!
+    @IBOutlet weak var sadImageView: UIImageView!
+    @IBOutlet weak var tongueImageView: UIImageView!
+    @IBOutlet weak var winkImageView: UIImageView!
+    
     
     var trayOriginalCenter: CGPoint!
     var trayCenterWhenOpen: CGPoint!
     var trayCenterWhenClosed: CGPoint!
     
+    var newlyCreatedFace: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
-        
-        print("screen height : \(screenHeight)")
-        print("frame height : \(self.view.frame.size.height)")
-        
-        trayCenterWhenOpen = CGPoint(x: self.view.frame.size.width/2, y: (screenHeight - 295))
-        trayCenterWhenClosed = CGPoint(x: self.view.frame.size.width/2, y: self.view.frame.size.height + 30)
+        trayCenterWhenOpen = CGPoint(x: self.view.frame.size.width/2, y: trayView.frame.origin.y + 50)
+        trayCenterWhenClosed = CGPoint(x: self.view.frame.size.width/2, y: trayView.frame.origin.y + 295)
         
     }
 
@@ -64,6 +66,73 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func onDeadPanGesture(_ sender: UIPanGestureRecognizer) {
+        
+        let point = sender.location(in: view)
+        
+        if sender.state == UIGestureRecognizerState.began {
+            // Gesture recognizers know the view they are attached to
+            let imageView = sender.view as! UIImageView
+            
+            // Create a new image view that has the same image as the one currently panning
+            newlyCreatedFace = UIImageView(image: imageView.image)
+            
+            // Add the new face to the tray's parent view.
+            view.addSubview(newlyCreatedFace)
+            
+            // Initialize the position of the new face.
+            newlyCreatedFace.center = imageView.center
+            
+            // Since the original face is in the tray, but the new face is in the
+            // main view, you have to offset the coordinates
+            newlyCreatedFace.center.y += trayView.frame.origin.y
+        } else if sender.state == UIGestureRecognizerState.changed {
+            print("Gesture changed at: \(point)")
+            deadImageView.center = CGPoint(x: point.x, y: point.y - trayView.frame.origin.y)
+        } else if sender.state == UIGestureRecognizerState.ended {
+            
+        }
+    }
+    
 
+    @IBAction func onExcitedPanGesture(_ sender: UIPanGestureRecognizer) {
+        let point = sender.location(in: view)
+        
+        if sender.state == UIGestureRecognizerState.began {
+            // Gesture recognizers know the view they are attached to
+            let imageView = sender.view as! UIImageView
+            
+            // Create a new image view that has the same image as the one currently panning
+            newlyCreatedFace = UIImageView(image: imageView.image)
+            
+            // Add the new face to the tray's parent view.
+            view.addSubview(newlyCreatedFace)
+            
+            // Initialize the position of the new face.
+            newlyCreatedFace.center = imageView.center
+            
+            // Since the original face is in the tray, but the new face is in the
+            // main view, you have to offset the coordinates
+            newlyCreatedFace.center.y += trayView.frame.origin.y
+        } else if sender.state == UIGestureRecognizerState.changed {
+            print("Gesture changed at: \(point)")
+            excitedImageView.center = CGPoint(x: point.x, y: point.y - trayView.frame.origin.y)
+        } else if sender.state == UIGestureRecognizerState.ended {
+            
+        }
+    }
+    
+    @IBAction func onHappyPanGesture(_ sender: UIPanGestureRecognizer) {
+    }
+    
+    @IBAction func onSadPanGesture(_ sender: UIPanGestureRecognizer) {
+    }
+    
+    @IBAction func onTonguePanGesture(_ sender: UIPanGestureRecognizer) {
+    }
+    
+    @IBAction func onWinkPanGesture(_ sender: UIPanGestureRecognizer) {
+    }
+    
 }
 
